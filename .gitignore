@@ -11,3 +11,6 @@
 
 # Terragrunt cache files
 .terragrunt-cache/
+
+# Python virtual environment
+.venv/

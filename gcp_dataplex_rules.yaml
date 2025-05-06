@@ -1,0 +1,53 @@
+executionSpecification:
+  trigger:
+    # schedule:
+    #   cron: "TZ=Europe/London 1 1 * * *"
+    on_demand: {}
+  # field: # Optional - Incremental
+samplingPercent: 100
+rowFilter:
+rules:
+  - column: transaction_id
+    dimension: UNIQUENESS
+    description: Ensure each transaction has a unique identifier
+    uniqueness_expectation: {}
+
+  - column: transaction_date
+    dimension: COMPLETENESS
+    description: Transaction date should not be null
+    threshold: 1.0
+    non_null_expectation: {}
+
+  - column: transaction_amount
+    dimension: VALIDITY
+    description: Transaction amount should be greater than zero
+    range_expectation:
+      min_value: 0.01
+      strict_min_enabled: true
+
+  - column: is_fraudulent
+    dimension: VALIDITY
+    description: Fraudulent flag should be boolean
+    set_expectation:
+      values:
+        - true
+        - false
+
+  - column: tags
+    dimension: VALIDITY 
+    description: Tags should not be empty
+    sql_assertion:
+      sql_statement: "SELECT transaction_id FROM ${data()} WHERE ARRAY_LENGTH(tags) = 0"
+
+  - column: account_holder_info
+    dimension: COMPLETENESS
+    description: Account holder information should not be null
+    threshold: 1.0
+    non_null_expectation: {}
+
+  - column: record_inserted_at
+    dimension: FRESHNESS
+    description: Ensure records are inserted within the last 30 days
+    row_condition_expectation: 
+      sql_expression: "record_inserted_at >= TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 30 DAY)"
+    threshold: 0

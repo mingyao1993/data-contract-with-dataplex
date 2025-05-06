@@ -1,0 +1,91 @@
+kind: DataContract
+apiVersion: v0.0.1
+
+owner: data_engineering_team_A
+version: 1.0.0
+status: active
+
+description:
+  purpose: Stores transaction details for financial analysis and fraud detection.
+  usage: Used by data science and analytics teams for monitoring, reporting, and machine learning.
+
+support:
+  - channel: '#transactions-support'
+    tool: slack
+    url: https://yourorg.slack.com/archives/C123456
+
+server: 
+    type: bigquery
+    project: <PROJECT>
+    dataset: <DATASET>
+    region: europe-west2
+
+schema:
+  table: transactions
+  description: Holds transactional data for auditing and analytics
+  tags: ['finance', 'transactions']
+  properties:
+    - name: transaction_id
+      type: INTEGER
+      description: Unique ID for the transaction
+    - name: exchange_rate
+      type: FLOAT
+      description: Exchange rate applied during the transaction
+    - name: transaction_amount
+      type: NUMERIC
+      description: Monetary value of the transaction
+    - name: account_balance
+      type: BIGNUMERIC
+      description: Account balance after the transaction
+    - name: is_fraudulent
+      type: BOOLEAN
+      description: Indicates if the transaction is flagged as fraudulent
+    - name: transaction_type
+      type: STRING
+      description: Type of the transaction (e.g., debit, credit)
+    - name: customer_signature
+      type: BYTES
+      description: Encrypted customer signature
+    - name: transaction_date
+      type: DATE
+      description: Date of the transaction
+    - name: approval_datetime
+      type: DATETIME
+      description: Date and time when the transaction was approved
+    - name: record_inserted_at
+      type: TIMESTAMP
+      description: Timestamp when the record was inserted
+    - name: execution_time
+      type: TIME
+      description: Time taken to execute the transaction
+    - name: additional_metadata
+      type: JSON
+      description: Additional transaction-related metadata in JSON format
+    - name: tags
+      mode: REPEATED
+      type: STRING
+      description: Tags associated with the transaction
+    - name: account_holder_info
+      type: RECORD
+      description: Nested record with account holder details
+      fields:
+        - name: customer_id
+          type: INTEGER
+          description: Unique ID of the customer
+        - name: customer_name
+          type: STRING
+          description: Name of the customer
+        - name: is_premium_customer
+          type: BOOLEAN
+          description: Indicates if the customer is a premium member
+
+quality:
+  type: custom
+  engine: gcp_dataplex
+  implementation:
+    filepath: 'gcp_dataplex_rules.yaml'
+
+tags:
+  - transactions
+  - fraud
+  - financial
