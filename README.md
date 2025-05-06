@@ -22,9 +22,9 @@ In environments using multiple tools for data ingestion (e.g., Fivetran), transf
 
 Further data governance capabilities that can be integrated into your data contract for a more automated and technical approach include:
 
-- Automated PII tagging in BigQuery to enhance data privacy.
+- Manual PII tagging in BigQuery to enhance data privacy.
 - Integration with external tools using custom format converters.
-- Automated Dataplex data profiling for ongoing data quality assessment.
+- Dataplex data profiling for ongoing data quality assessment.
 - Schema drift detection and alerting to maintain data integrity.
 
 These features go beyond the current repository and can be adapted to suit your organisation’s specific governance needs.
